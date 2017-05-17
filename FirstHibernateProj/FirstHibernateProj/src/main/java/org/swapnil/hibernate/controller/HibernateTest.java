@@ -20,7 +20,14 @@ public class HibernateTest {
        
 		Vehicle vehicle = new Vehicle();
 		vehicle.setVehicleName("car");
+		user.getVehicle().add(vehicle);
 		
+		Vehicle vehicle2 = new Vehicle();
+		vehicle2.setVehicleName("jeep");
+		
+		user.getVehicle().add(vehicle2);
+		vehicle.setUser(user);
+		vehicle2.setUser(user);
 		SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 		// session object will be use to store model object
 		Session session = sessionFactory.openSession();
@@ -29,6 +36,7 @@ public class HibernateTest {
 
 		session.save(user);
 		session.save(vehicle);
+		session.save(vehicle2);
 		// end transaction
 		session.getTransaction().commit();
 		session.close(); // session will be close
