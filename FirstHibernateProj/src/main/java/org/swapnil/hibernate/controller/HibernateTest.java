@@ -22,18 +22,18 @@ public class HibernateTest {
 		addr.setStreet("abc");
 		addr.setCity("Navimumbai");
 		addr.setState("maharashtra");
-
-		user.setHomeAddress(addr);
+        addr.setPincode("400001");
+		
 		
 		Address addr2 = new Address();
 		addr2.setCity("Mumbai");
 		addr2.setStreet("xyz");
 		addr2.setState("Maharashtra");
+		addr2.setPincode("4000100");
 		
-		user.setOfficeAddress(addr2);
-		user.setJoinedDate(new Date());
-		user.setDescription("I am smart");
-
+		user.getListofAddress().add(addr);
+		user.getListofAddress().add(addr2);
+	
 		// configuration in configure takes the configuration file and reads the
 		// configuration file to understand
 		// what's the DB conf1iguration needs to be made so its gets to cfg.xml
@@ -51,15 +51,17 @@ public class HibernateTest {
 		session.getTransaction().commit();
 		session.close(); // session will be close
 
-		/*
-		 * user = null; session = sessionFactory.openSession();
-		 * session.beginTransaction();
-		 * 
-		 * //to fetch value is inserted 1st parameter is class and 2nd parameter
-		 * is object of class user = (UserDetails)session.get(UserDetails.class,
-		 * 2); //System.out.println("User name reterived is "+
-		 * user.getUserName());
-		 */
-
-	}
+		 user = null;
+		 session = sessionFactory.openSession();
+		 session.beginTransaction();
+		  
+		  //to fetch value is inserted 1st parameter is class and 2nd parameter
+		  //is object of class 
+		 user = (UserDetails)session.get(UserDetails.class, 1);
+		 session.close(); //To check if its proxy object or not i.e lazy fetch
+		 System.out.println(user.getListofAddress().size()); // size the value of proxy object
+		 
+		 //Even if the session is close we get the out when we use fetchType eager 
+		 //bydeafault its lazy from hibernate 3
+		 }
 }
